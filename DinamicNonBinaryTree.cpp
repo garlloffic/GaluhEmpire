@@ -232,7 +232,9 @@ void InsertWife(DataTree *Tree) {
 		            Status(Temp) = true;
 		            
 		            printf("\n\n");
-		            printf("Yey... Wishing the both of you all the love and happiness in the world and congratulations on your marriage");
+		            printf("Yey... Wishing the both of you all the love and happiness in the world and congratulations on your marriage\n");
+		            system("pause");
+					system("cls");
         		}
         	}	
 		}
@@ -292,6 +294,8 @@ void InsertHusband(DataTree *Tree) {
 					
 					printf("\n\n");
 					printf("Yey... Wishing the both of you all the love and happiness in the world and congratulations on your marriage\n");
+					system("pause");
+					system("cls");
 				}
 			}
 		}
@@ -302,21 +306,17 @@ void Print(TNBTreeAddress TreeAddress, char tab[]) {
 	char Temp[255];
 	strcpy(Temp, tab);
 	strcat(Temp, "-");
-	if(TreeAddress != NULL) {
-		if(Status(TreeAddress) == true) {
-			printf("%s %s (%s)\n", tab, Name(TreeAddress), Name(Pair(TreeAddress)));
-			Print(FirstSon(TreeAddress), Temp);
-			Print(NextBrother(TreeAddress), tab);
-			system("pause");
-			system("cls");
-		} else {
-			printf("%s %s \n", tab, Name(TreeAddress));
-			Print(FirstSon(TreeAddress), Temp);
-			Print(NextBrother(TreeAddress), tab);
-			system("pause");
-			system("cls");
-		}	
-	}	     
+		if(TreeAddress != NULL) {
+			if(Status(TreeAddress) == true) {
+				printf("%s %s (%s)\n", tab, Name(TreeAddress), Name(Pair(TreeAddress)));
+				Print(FirstSon(TreeAddress), Temp);
+				Print(NextBrother(TreeAddress), tab);
+			} else {
+				printf("%s %s \n", tab, Name(TreeAddress));
+				Print(FirstSon(TreeAddress), Temp);
+				Print(NextBrother(TreeAddress), tab);
+			}	
+	}	    
 }
 
 void CountChildren(DataTree Tree){
@@ -394,17 +394,74 @@ void Delete(DataTree *Tree) {
 	NodeSearch = Search(*Tree, NameDel);
 	
 	if(NodeSearch == Root(Tree)){
+		//Jika Tidak punya anak
 		if (FirstSon(Root(Tree)) == NULL){
-			fp = fopen("Assets/ExportKing.txt", "a");
-			strcpy(ExRaja, Name(NodeSearch));
-			fwrite(&ExRaja, sizeof(ExRaja),1,fp);
-			fclose(fp);
-			
-			printf("\n");
-			printf("Raja %s telah meninggal, karena tidak ada keturunan maka kerajaan runtuh", Name(Root(Tree)));
-			Root(Tree) = NULL;
-			free(NodeSearch);
-		} else {
+			//Jika Tidak punya saudara
+				if(NextBrother(Root(Tree)) == NULL){
+					if(NextBrother(Parent(Root(Tree))) == NULL){
+						fp = fopen("Assets/ExportKing.txt", "a");
+						strcpy(ExRaja, Name(NodeSearch));
+						fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+						fclose(fp);
+						
+						printf("\n");
+						printf("Raja %s telah meninggal, karena tidak ada keturunan maka kerajaan runtuh", Name(Root(Tree)));
+						Root(Tree) = NULL;
+//						free(NodeSearch);						
+					}
+					else{
+						//Paman Raja Yang Naik
+						if(Gender(NextBrother(Parent(Root(Tree)))) == true){
+							temp = NextBrother(Parent(Root(Tree)));
+							
+							fp = fopen("Assets/ExportKing.txt", "a");
+							strcpy(ExRaja, Name(NodeSearch));
+							fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+							fclose(fp);
+							printf("Selamat %s diangkat sebagai raja baru", Name(temp));
+							Root(Tree) = temp;
+//							free(NodeSearch);
+						}
+						else{
+							fp = fopen("Assets/ExportKing.txt", "a");
+							strcpy(ExRaja, Name(NodeSearch));
+							fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+							fclose(fp);
+								
+							printf("\n");
+							printf("Karena tidak ada calon raja yang memenuhi kriteria maka kerajaan runtuh");
+							Root(Tree) = NULL;
+//							free(NodeSearch);								
+							}
+						}
+				}
+				else{
+					//Saudara Raja Naik
+					if(Gender(NextBrother(Root(Tree))) == true){
+						temp = NextBrother(Root(Tree));
+						fp = fopen("Assets/ExportKing.txt", "a");
+						strcpy(ExRaja, Name(NodeSearch));
+						fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+						fclose(fp);
+						printf("\n");
+						printf("Selamat %s diangkat sebagai raja baru", Name(temp));
+						Root(Tree) = temp;
+//						free(NodeSearch);
+					}
+					else{
+						fp = fopen("Assets/ExportKing.txt", "a");
+						strcpy(ExRaja, Name(NodeSearch));
+						fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+						fclose(fp);
+									
+						printf("\n");
+						printf("Karena tidak ada calon raja yang memenuhi kriteria maka kerajaan runtuh");
+						Root(Tree) = NULL;
+//						free(NodeSearch);						
+					}
+				}
+			}
+			else {
 			temp = Tree->Root->FirstSon;
 			
 			if(NextBrother(temp) == NULL){
@@ -417,21 +474,31 @@ void Delete(DataTree *Tree) {
 					printf("\n");
 					printf("Selamat %s diangkat sebagai raja baru", Name(temp));
 					Root(Tree) = temp;
-					free(NodeSearch);
+//					free(NodeSearch);
 				} else {
 					if(FirstSon(temp) != NULL){
 						if(Gender(FirstSon(temp)) == true){
+							fp = fopen("Assets/ExportKing.txt", "a");
+							strcpy(ExRaja, Name(NodeSearch));
+							fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+							fclose(fp);
+									
 							Root(Tree) = FirstSon(temp);
 							printf("\n");
 							printf("Selamat %s diangkat sebagai raja baru", Name(FirstSon(temp)));
-							free(NodeSearch);
+//							free(NodeSearch);
 						} else {
 							if(NextBrother(FirstSon(temp)) != NULL){
 								if(Gender(NextBrother(FirstSon(temp))) == true){
+									fp = fopen("Assets/ExportKing.txt", "a");
+									strcpy(ExRaja, Name(NodeSearch));
+									fwrite(&ExRaja, sizeof(ExRaja),1,fp);
+									fclose(fp);
+									
 									Root(Tree) = NextBrother(FirstSon(temp));
 									printf("\n");
 									printf("Selamat %s diangkat sebagai raja baru", Name(NextBrother(FirstSon(temp))));
-									free(NodeSearch);
+//									free(NodeSearch);
 								} else {
 									fp = fopen("Assets/ExportKing.txt", "a");
 									strcpy(ExRaja, Name(NodeSearch));
@@ -441,7 +508,7 @@ void Delete(DataTree *Tree) {
 									printf("\n");
 									printf("Karena tidak ada keturunan laki laki maka, kerajaan runtuh");
 									Root(Tree) = NULL;
-									free(NodeSearch);
+//									free(NodeSearch);
 								}
 							} else {
 									fp = fopen("Assets/ExportKing.txt", "a");
@@ -452,7 +519,7 @@ void Delete(DataTree *Tree) {
 									printf("\n");
 									printf("Karena tidak ada keturunan laki laki maka, kerajaan runtuh");
 									Root(Tree) = NULL;
-									free(NodeSearch);
+//									free(NodeSearch);
 							}
 						}
 					} else {
@@ -464,10 +531,10 @@ void Delete(DataTree *Tree) {
 						printf("\n");
 						printf("Karena tidak ada keturunan laki laki maka, kerajaan runtuh");
 						Root(Tree) = NULL;
-						free(NodeSearch);
+//						free(NodeSearch);
 					}
 				}
-			} else {
+			}else {
 				if(Gender(temp) == true){
 					fp = fopen("Assets/ExportKing.txt", "a");
 					strcpy(ExRaja, Name(NodeSearch));
@@ -475,10 +542,9 @@ void Delete(DataTree *Tree) {
 					fclose(fp);
 					
 					Root(Tree) = temp;
-					NextBrother(temp) = NULL;
 					printf("\n");
 					printf("Selamat %s diangkat sebagai raja baru", Name(temp));
-					free(NodeSearch);
+//					free(NodeSearch);
 				} else {
 					while((Gender(temp) == false) || (NextBrother(temp) != NULL)) {
 						temp = NextBrother(temp);
@@ -489,10 +555,9 @@ void Delete(DataTree *Tree) {
 							fwrite(&ExRaja, sizeof(ExRaja),1,fp);
 							fclose(fp);
 							Root(Tree) = temp;
-							NextBrother(temp) = NULL;
 							printf("\n");
 							printf("Selamat %s diangkat sebagai raja baru", Name(temp));						
-							free(NodeSearch);
+//							free(NodeSearch);
 						} else {
 							fp = fopen("Assets/ExportKing.txt", "a");
 							strcpy(ExRaja, Name(NodeSearch));
@@ -502,31 +567,33 @@ void Delete(DataTree *Tree) {
 							Root(Tree) = NULL;
 							printf("\n");
 							printf("Karena tidak ada calon raja yang memenuhi kriteria maka kerajaan runtuh");
-							free(NodeSearch);
+//							free(NodeSearch);
 						}
 					}
 				}
 			}	
-		}
-	} else{
+		}	
+	}
+	//Bukan Raja yang meninggal
+	else{
 		if(NodeSearch == FirstSon(Root(Tree))){
 			if(NextBrother(NodeSearch) == NULL){
 				if(FirstSon(NodeSearch) != NULL){
 					temp = FirstSon(NodeSearch);
 					FirstSon(Root(Tree)) = temp;
 					printf("Selamat %s ditunjuk sebagai calon raja berikutnya", FirstSon(Root(Tree)));
-					free(NodeSearch);
-				} else{
+//					free(NodeSearch);
+				}else{
 					FirstSon(Root(Tree)) = NULL;
-					free(NodeSearch);
+//					free(NodeSearch);
 				}	
-			} else{
+			}else{
 				temp = NextBrother(NodeSearch);
 				FirstSon(Root(Tree)) = temp;
 				printf("Selamat %s ditunjuk sebagai calon raja berikutnya", FirstSon(Root(Tree)));
-				free(NodeSearch);
+//				free(NodeSearch);
 			}
-		} else {
+		}else {
 			if(NextBrother(NodeSearch) != NULL){
 				temp = FirstSon(Parent(NodeSearch));
 				temp1 = NextBrother(NodeSearch);
@@ -537,7 +604,7 @@ void Delete(DataTree *Tree) {
 				
 				NextBrother(NodeSearch) = NULL;
 				NextBrother(temp) = temp1;
-				free(NodeSearch);
+//				free(NodeSearch);
 			} else{
 				temp = FirstSon(Parent(NodeSearch));
 				
@@ -546,7 +613,7 @@ void Delete(DataTree *Tree) {
 				}
 				
 				NextBrother(temp) = NULL;
-				free(NodeSearch);
+//				free(NodeSearch);
 			}
 		}
 	}	

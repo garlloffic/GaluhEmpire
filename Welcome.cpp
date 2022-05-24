@@ -91,8 +91,18 @@ int Welcome() {
 				InsertHusband(&Tree);
 				break;
 			case 4 :
-				Print(Tree.Root,str);
+				if(Tree.Root->Status == true){
+					printf("%s (%s) \n",Tree.Root->Name, Tree.Root->Pair->Name);
+					Print(Tree.Root->FirstSon,str);
+					system("pause");
+					system("cls");
+					break;
+				}
+				else{
+					printf("%s \n",Tree.Root->Name);
+					Print(Tree.Root->FirstSon,str);
 				break;
+				}
 			case 5 :
 				CountChildren(Tree);
 				break;
