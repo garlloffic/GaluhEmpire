@@ -19,7 +19,7 @@ Galuh Empire is a program in which a chart of family relations will be displayed
 ## 💻 Install
 - Clone Repository
 ```bash
-git clone https://github.com/garllockhart/GaluhEmpire.git
+git clone https://github.com/garlloffic/GaluhEmpire.git
 ```
 ```bash
 cd GaluhEmpire
@@ -27,8 +27,8 @@ cd GaluhEmpire
 
 ## 🧑 Author
 👤 **Garly Nugraha**
-- Instagram : <a href="https://www.instagram.com/garllockhart/">@garllockhart</a>
-- Twitter : <a href="https://twitter.com/garllockhart/">@garllockhart</a>
+- Instagram : <a href="https://www.instagram.com/garlloffic/">@garlloffic</a>
+- Twitter : <a href="https://twitter.com/garlloffic/">@garlloffic</a>
 
 👤 **Nazwa Fitriyani Zahra**
 - Instagram : <a href="https://www.instagram.com/nazwafitriyanizz/">@nazwafitriyanizz</a>
